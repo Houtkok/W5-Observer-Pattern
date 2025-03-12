@@ -8,6 +8,7 @@ void main() {
 
   // 1 - Initialize the services
   RidePrefService.initialize(MockRidePreferencesRepository());
+  RidePrefService.instance.addListener(ConsoleLogger());
 
   // 2- Run the UI
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       theme: appTheme,
       home: Scaffold(body: RidePrefScreen()),
     );

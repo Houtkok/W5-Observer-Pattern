@@ -1,6 +1,12 @@
 
+import 'package:flutter/foundation.dart';
+
 import '../model/ride_pref/ride_pref.dart';
 import '../repository/ride_preferences_repository.dart';
+
+abstract class RidePreferencesListener{
+  void onPreferenceChanged(RidePreference preference);
+}
 
 ////
 ///   This service handles:
@@ -16,6 +22,9 @@ class RidePrefService {
 
   // The current preference
   RidePreference? _currentPreference;
+
+  // List of listeners
+  final List<RidePreferencesListener> _listeners =[];
 
   ///
   /// Private constructor
@@ -61,5 +70,24 @@ class RidePrefService {
 
   void addPreference(RidePreference preference) {
     return repository.addPreference(preference);
+  }
+
+  void addListener(RidePreferencesListener listener){
+    _listeners.add(listener);
+  }
+
+  void notifyListeners(RidePreference preference){
+    for(var listener in _listeners){
+      listener.onPreferenceChanged(preference);
+    }
+  }
+}
+
+class ConsoleLogger implements RidePreferencesListener{
+  @override
+  void onPreferenceChanged(RidePreference preference){
+    if(kDebugMode){
+      print('Ride preference change: ${preference.toString()}');
+    }
   }
 }
