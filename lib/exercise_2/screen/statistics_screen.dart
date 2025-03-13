@@ -8,18 +8,19 @@ class StatisticsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorCounters = Provider.of<ColorCounters>(context);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Statistics')),
-      body: ListView(
-        children: CardType.values.map((type) {
-          return ListTile(
-            title: Text('${type.name.toUpperCase()} Taps '),
-            trailing: Text('${colorCounters.getTapCount(type)}', style: const TextStyle(fontSize: 24)),
-          );
-        }).toList(),
-      ),
+      body: Consumer<ColorCounters>(builder: (context, colorCounters, child) {
+        return ListView(
+          children: CardType.values.map((type) {
+            return ListTile(
+              title: Text('${type.name.toUpperCase()} Taps '),
+              trailing: Text('${colorCounters.getTapCount(type)}',
+                  style: const TextStyle(fontSize: 24)),
+            );
+          }).toList(),
+        );
+      }),
     );
   }
 }
